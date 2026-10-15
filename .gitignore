@@ -1,0 +1,19 @@
+.cache/
+.playwright-mcp/
+frontend/node_modules/
+frontend/dist/
+backend/target/
+backend/application-local.yml
+backend/application-local.properties
+.env
+.env.*
+!.env.example
+*.log
+.idea/
+.vscode/
+*.iml
+Thumbs.db
+
+# 本机说明和文档默认不提交；需要时由用户 git add -f 手动加入。
+AGENTS.md
+/docs/
