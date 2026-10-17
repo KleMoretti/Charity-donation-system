@@ -5,5 +5,5 @@ defineProps({ title: String, description: String, pending: { type: Boolean, defa
 
 <template>
   <PageHeading :title="title" :description="description" />
-  <el-card shadow="never"><el-empty :description="pending ? '页面框架已建立，功能待实现' : '找不到这个页面'"><RouterLink to="/"><el-button type="primary">返回工程概览</el-button></RouterLink></el-empty></el-card>
+  <el-card shadow="never"><el-empty :description="pending ? '内容正在准备中' : '找不到这个页面'"><RouterLink to="/"><el-button type="primary">返回公益首页</el-button></RouterLink></el-empty></el-card>
 </template>

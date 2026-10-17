@@ -15,9 +15,9 @@ const router = createRouter({
     { path: '/admin/projects', component: () => import('../views/AdminProjectsView.vue'), meta: { requiresAuth: true, adminOnly: true } },
     { path: '/admin/donations', component: () => import('../views/AdminDonationsView.vue'), meta: { requiresAuth: true, adminOnly: true } },
     { path: '/admin/stats', component: () => import('../views/AdminStatsView.vue'), meta: { requiresAuth: true, adminOnly: true } },
-    { path: '/:pathMatch(.*)*', component: () => import('../views/PlaceholderView.vue'), props: { title: '页面不存在', description: '请返回工程概览，或使用顶部导航。', pending: false } },
+    { path: '/:pathMatch(.*)*', component: () => import('../views/PlaceholderView.vue'), props: { title: '页面不存在', description: '请返回公益首页，或发现其他值得关注的项目。', pending: false } },
   ],
-  scrollBehavior: () => ({ top: 0 }),
+  scrollBehavior: (to) => to.hash ? { el: to.hash, top: 112, behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' } : { top: 0 },
 })
 
 router.beforeEach(async (to) => {
