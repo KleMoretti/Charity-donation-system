@@ -30,7 +30,7 @@ async function submit() {
 
 <template>
   <div class="auth-panel">
-    <PageHeading title="用户注册" description="注册账号为普通用户，管理员由本机初始化流程创建。" />
+    <span class="eyebrow">A LITTLE KINDNESS, A NEW BEGINNING</span><PageHeading title="从一份关心开始" description="加入善意同行，找到你愿意支持的美好。" />
     <el-card shadow="never">
       <el-form ref="formRef" :model="form" :rules="rules" label-position="top" :disabled="busy" @submit.prevent="submit">
         <el-form-item label="用户名" prop="username"><el-input v-model="form.username" autocomplete="username" maxlength="50" /></el-form-item>

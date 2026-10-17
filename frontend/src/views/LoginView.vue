@@ -33,14 +33,14 @@ async function submit() {
 
 <template>
   <div class="auth-panel">
-    <PageHeading title="用户登录" description="登录后可使用对应角色的功能。" />
+    <span class="eyebrow">WELCOME BACK</span><PageHeading title="欢迎回来" description="让关心继续发生，让每一份善意都有回应。" />
     <el-card shadow="never">
       <el-form ref="formRef" :model="form" :rules="rules" label-position="top" :disabled="busy" @submit.prevent="submit">
         <el-form-item label="用户名" prop="username"><el-input v-model="form.username" autocomplete="username" maxlength="50" /></el-form-item>
         <el-form-item label="密码" prop="password"><el-input v-model="form.password" type="password" show-password autocomplete="current-password" maxlength="72" /></el-form-item>
         <el-button type="primary" native-type="submit" :loading="busy" class="full-width">登录</el-button>
       </el-form>
-      <p class="form-link">还没有账号？<RouterLink to="/register">注册普通用户</RouterLink></p>
+      <p class="form-link">还没有账号？<RouterLink to="/register">加入善意同行</RouterLink></p>
     </el-card>
   </div>
 </template>

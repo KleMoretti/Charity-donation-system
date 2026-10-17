@@ -18,10 +18,11 @@ onMounted(load)
 </script>
 
 <template>
-  <PageHeading title="我的捐款记录" description="仅展示当前账号提交的模拟成功记录，不涉及实际资金到账。" />
+  <span class="eyebrow">MY CONTRIBUTIONS</span><PageHeading title="我的捐赠记录" description="每一次参与，都是值得珍藏的善意。" />
+  <p class="records-notice">当前尚未接入真实支付，以下为已提交的参与记录，未发生实际扣款。</p>
   <div class="section-actions"><el-button :loading="loading" @click="load">刷新记录</el-button><RouterLink to="/projects"><el-button type="primary" plain>浏览公益项目</el-button></RouterLink></div>
   <p v-if="loading" role="status">正在加载记录…</p>
   <el-alert v-else-if="error" :title="error" type="error" :closable="false" show-icon />
-  <el-empty v-else-if="!records.length" description="还没有模拟捐款记录" />
+  <el-empty v-else-if="!records.length" description="你的第一份善意，正等待启程" />
   <DonationTable v-else :records="records" />
 </template>

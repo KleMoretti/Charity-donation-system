@@ -71,7 +71,7 @@ onMounted(load)
     <el-table :data="projects" border>
       <el-table-column prop="title" label="项目标题" min-width="220" show-overflow-tooltip />
       <el-table-column label="目标金额" width="170"><template #default="{ row }">¥ {{ money(row.targetAmount) }}</template></el-table-column>
-      <el-table-column label="已模拟募集" width="190"><template #default="{ row }">¥ {{ money(row.raisedAmount) }} · {{ row.donationCount }} 笔</template></el-table-column>
+      <el-table-column label="支持记录金额" width="190"><template #default="{ row }">¥ {{ money(row.raisedAmount) }} · {{ row.donationCount }} 笔</template></el-table-column>
       <el-table-column label="状态" width="110"><template #default="{ row }"><el-tag :type="statusType(row.status)">{{ statusLabel(row.status) }}</el-tag></template></el-table-column>
       <el-table-column label="创建时间" width="160"><template #default="{ row }">{{ dateTime(row.createdAt) }}</template></el-table-column>
       <el-table-column label="操作" min-width="210"><template #default="{ row }">
