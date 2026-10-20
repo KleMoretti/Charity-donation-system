@@ -16,6 +16,7 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.web.bind.annotation.*;
 import static org.mockito.Mockito.when;
+import static org.hamcrest.Matchers.containsString;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -75,6 +76,18 @@ class SystemControllerTest {
         mvc.perform(post("/api/test/donation-input").with(csrf()).contentType("application/json")
                 .content(input.replace("\"projectId\":1", "\"projectId\":1.9")))
                 .andExpect(status().isBadRequest()).andExpect(jsonPath("$.code").value("INVALID_INPUT"));
+    }
+
+    @Test
+    @WithMockUser
+    void mvcErrorsKeepClientStatusCodes() throws Exception {
+        mvc.perform(get("/api/test/donation-input"))
+                .andExpect(status().isMethodNotAllowed()).andExpect(header().string("Allow", "POST"))
+                .andExpect(jsonPath("$.code").value("METHOD_NOT_ALLOWED"));
+        mvc.perform(post("/api/test/donation-input").with(csrf()).contentType("text/plain").content("invalid"))
+                .andExpect(status().isUnsupportedMediaType())
+                .andExpect(header().string("Accept", containsString("application/json")))
+                .andExpect(jsonPath("$.code").value("UNSUPPORTED_MEDIA_TYPE"));
     }
 
     // 仅在测试上下文注册，不会进入实际应用。
