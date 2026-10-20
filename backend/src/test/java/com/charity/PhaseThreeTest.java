@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
+import org.springframework.dao.DataAccessResourceFailureException;
 import org.springframework.mock.web.MockHttpSession;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.util.ReflectionTestUtils;
@@ -68,6 +69,17 @@ class PhaseThreeTest {
                 .andExpect(status().isOk());
         assertTrue(session.isInvalid());
         mvc.perform(get("/api/auth/me")).andExpect(status().isUnauthorized());
+    }
+
+    @Test
+    void authenticationInfrastructureFailureReturns503() throws Exception {
+        when(users.findByUsername("unavailable_user"))
+                .thenThrow(new DataAccessResourceFailureException("internal database failure"));
+        mvc.perform(post("/api/auth/login").with(csrf()).contentType("application/json")
+                .content("{\"username\":\"unavailable_user\",\"password\":\"valid-pass-123\"}"))
+                .andExpect(status().isServiceUnavailable())
+                .andExpect(jsonPath("$.code").value("AUTH_SERVICE_UNAVAILABLE"))
+                .andExpect(jsonPath("$.message").value("登录服务暂时不可用，请稍后重试"));
     }
 
     @Test

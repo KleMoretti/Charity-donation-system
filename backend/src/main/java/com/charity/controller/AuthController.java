@@ -48,6 +48,8 @@ public class AuthController {
         try {
             authentication = authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(input.getUsername(), input.getPassword()));
+        } catch (AuthenticationServiceException exception) {
+            throw new BusinessException(HttpStatus.SERVICE_UNAVAILABLE, "AUTH_SERVICE_UNAVAILABLE", "登录服务暂时不可用，请稍后重试");
         } catch (AuthenticationException exception) {
             throw new BusinessException(HttpStatus.UNAUTHORIZED, "LOGIN_FAILED", "用户名或密码错误");
         }
