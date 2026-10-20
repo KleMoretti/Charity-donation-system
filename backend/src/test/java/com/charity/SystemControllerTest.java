@@ -3,7 +3,9 @@ package com.charity;
 import com.charity.config.SecurityConfig;
 import com.charity.controller.SystemController;
 import com.charity.dto.HealthResponse;
+import com.charity.dto.DonationRequest;
 import com.charity.service.HealthService;
+import javax.validation.Valid;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -64,10 +66,23 @@ class SystemControllerTest {
         mvc.perform(post("/api/test/write").with(csrf())).andExpect(status().isOk());
     }
 
+    @Test
+    @WithMockUser
+    void rejectsFractionalProjectId() throws Exception {
+        String input = "{\"projectId\":1,\"amount\":\"1.00\",\"requestId\":\"integer-id-check\"}";
+        mvc.perform(post("/api/test/donation-input").with(csrf()).contentType("application/json").content(input))
+                .andExpect(status().isOk()).andExpect(jsonPath("$.projectId").value(1));
+        mvc.perform(post("/api/test/donation-input").with(csrf()).contentType("application/json")
+                .content(input.replace("\"projectId\":1", "\"projectId\":1.9")))
+                .andExpect(status().isBadRequest()).andExpect(jsonPath("$.code").value("INVALID_INPUT"));
+    }
+
     // 仅在测试上下文注册，不会进入实际应用。
     @RestController
     static class SecurityProbe {
         @GetMapping("/api/admin/test") String admin() { return "ok"; }
         @PostMapping("/api/test/write") String write() { return "ok"; }
+        @PostMapping(value = "/api/test/donation-input", consumes = "application/json")
+        DonationRequest donationInput(@Valid @RequestBody DonationRequest input) { return input; }
     }
 }
